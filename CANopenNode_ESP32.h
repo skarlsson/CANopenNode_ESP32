@@ -5,7 +5,16 @@
 
 #include "CANopen.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 bool CO_ESP32_init();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CONFIG_USE_CANOPENNODE */
 #endif /* CANOPENNODE_ESP32_H */
