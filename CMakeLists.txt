@@ -7,26 +7,32 @@ set(co_dir "CANopenNode")
 set(co_port_dir "port")
 
 if(CONFIG_USE_CANOPENNODE)
-  # Add common source files
-  list(APPEND srcs
-    "CANopenNode_ESP32.c"
-    "${co_dir}/CANopen.c"
-    "${co_dir}/301/CO_Emergency.c"
-    "${co_dir}/301/CO_fifo.c"
-    "${co_dir}/301/CO_HBconsumer.c"
-    "${co_dir}/301/CO_NMT_Heartbeat.c"
-    "${co_dir}/301/CO_ODinterface.c"
-    "${co_dir}/301/CO_PDO.c"
-    "${co_dir}/301/CO_SDOserver.c"
-    "${co_dir}/301/CO_SYNC.c"
-    "${co_dir}/301/CO_TIME.c"
-    "${co_dir}/305/CO_LSSmaster.c"
-    "${co_dir}/305/CO_LSSslave.c"
-    "${co_port_dir}/CO_driver.c")
+
+   # Add wrapper
+    list(APPEND srcs "CANopenNode_ESP32.c")
+    
+    # Glob the common CANopen sources
+    file(GLOB canopen_301_srcs "${co_dir}/301/*.c")
+    file(GLOB canopen_303_srcs "${co_dir}/303/*.c")
+    file(GLOB canopen_304_srcs "${co_dir}/304/*.c")
+    file(GLOB canopen_305_srcs "${co_dir}/305/*.c")
+    file(GLOB canopen_309_srcs "${co_dir}/309/*.c")    
+    file(GLOB canopen_port_srcs "${co_port_dir}/*.c")
+    
+    list(APPEND srcs 
+        "${co_dir}/CANopen.c"
+        ${canopen_301_srcs}
+        ${canopen_303_srcs}
+        ${canopen_304_srcs}
+        ${canopen_305_srcs}
+        ${canopen_309_srcs}        
+        ${canopen_port_srcs})
+    
   list(APPEND include_dirs
     "."
     "${co_dir}"
     "${co_port_dir}")
+
 endif() #CONFIG_USE_CANOPENNODE
 
 if(CONFIG_CO_LED_ENABLE)
